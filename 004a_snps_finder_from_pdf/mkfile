@@ -1,0 +1,15 @@
+< ../config.mk
+
+all:VQ:
+	bin/targets | xargs mk
+
+results/%.snp.tsv: data/%.txt
+	mkdir -p `dirname $target`
+	echo "PMID	SNP" > $target.build
+	PMID=$(ls -1 $prereq | cut -d "/" -f2 | cut -d. -f1)
+	SNP=$(cat $prereq | tr " " "_" | sed -e "s#,#_,#g" -e "s#;#_,#g" -e "s#^#_#g" -e "s#(#_,_#g" -e "s#)#\n#g" | grep  "_rs.*_" |tr "\n" ",")
+	if [ "$SNP" = "" ]; then 
+		SNP="NA"
+	fi
+	echo "$PMID	$SNP" >> $target.build \
+	&& mv $target.build $target

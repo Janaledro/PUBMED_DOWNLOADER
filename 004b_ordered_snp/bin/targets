@@ -1,0 +1,3 @@
+#!/bin/bash
+
+echo "results/snps_table.tsv"
