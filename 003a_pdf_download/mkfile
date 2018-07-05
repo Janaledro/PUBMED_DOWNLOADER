@@ -10,13 +10,12 @@ results/%.pdf: data/%.txt
 	PDF=$(cat $prereq |tr "<" "\n" | grep PDF | grep "href=" | cut -d'"' -f2)
 	echo "descargando $BASE_URL2$PDF"
 	wget -U firefox  $BASE_URL2$PDF -O $target.build  
-	PDF_STATUS=$(grep '<!DOCTYPE html>' $target.build| sort -u || echo "IT'S A PDF!")
-	while ["$PDF_STATUS" = '<!DOCTYPE html>' ]
-	do
+	PDF_STATUS=$(grep '<!DOCTYPE html>' $target.build| sort -u || echo "IT_IS_A_PDF!")
+	if ["$PDF_STATUS" = '<!DOCTYPE html>' ]; then
 		echo "PDF STATUS = $PDF_STATUS"
 		echo "Removing the fake pdf and downloading the next one"
 		rm $target.build
 		exit 1
-	done	
+	fi
 	echo "PDF succesfully downloaded"
 	mv $target.build $target
