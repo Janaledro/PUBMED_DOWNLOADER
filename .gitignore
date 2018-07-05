@@ -1,0 +1,6 @@
+*001_index_download/results*
+*002_metadata_download/*
+*003a_pdf_download/*
+*003b_pdf_converter/*
+*004a_snps_finder_from_pdf/*
+*004b_ordered_snp/*
