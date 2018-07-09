@@ -7,8 +7,8 @@ results/%.snp.tsv: data/%.txt
 	mkdir -p `dirname $target`
 	echo "PMID	SNP" > $target.build
 	PMID=$(ls -1 $prereq | cut -d "/" -f3 | cut -d. -f1)
-	SNP=$(cat $prereq | tr " " "_" | sed -e "s#,#_,#g" -e "s#;#_,#g" -e "s#^#_#g" -e "s#_(#,_#g" -e "s#)#\n#g" | grep "_rs[1-9].*_" | sed "s/rs/\n/g" \
-	| sed -n 's/^\([0-9]*\).*/\1/p' | sed "s/^[0-9]/rs/g" | tr "\n" "," | tr -s "," | sed "s#^,##g" | sed "s#,\$##g")
+	SNP=$(cat $prereq | grep " rs[0-9]"|sed 's/.*\(rs[0-9]\)/.*\1/p' | tr " " "\t" | cut -f1 | tr -d "," |cut -d* -f2| tr -d ";" \
+	| sort -u | tr "\n" "," | tr -d ")" |sed "s#,\$##")
 	if [ "$SNP" = "" ]; then 
 		SNP="NA"
 	fi
