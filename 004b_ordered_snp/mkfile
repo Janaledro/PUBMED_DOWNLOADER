@@ -3,9 +3,8 @@
 all:VQ:
 	bin/targets | xargs mk
 
-results/snps_table.tsv: data/
+results/%.tsv: data/%/*.tsv
 	set -x
 	mkdir -p `dirname $target`
-	cat $prereq/*.snp.tsv \
-	| sort -u -n > $target.build \
+	awk 'FNR==1 && NR!=1{next;}{print}' $prereq > $target.build \
 	&& mv $target.build $target

@@ -11,12 +11,17 @@ results/%.pdf: data/%.txt
 	echo "descargando $BASE_URL2$PDF"
 	wget -U firefox  $BASE_URL2$PDF -O $target.build  
 	PDF_STATUS=$(grep '<!DOCTYPE html>' $target.build| sort -u || echo "IT_IS_A_PDF!")
+	i="1"
 	while ["$PDF_STATUS" = '<!DOCTYPE html>' ]
 	do
-	echo "PDF STATUS = $PDF_STATUS"
-		echo "Removing the fake pdf and downloading the next one"
-		rm $target.build
-		exit 1
+		if [ "$i" -le 2 ]; then
+			echo "PDF STATUS = $PDF_STATUS"
+			echo "Removing the fake pdf and downloading the next one"
+			i=$(( $i +1 ))
+		else
+			rm $target.build
+			exit 1
+		fi
 	done
 	echo "PDF succesfully downloaded"
 	mv $target.build $target

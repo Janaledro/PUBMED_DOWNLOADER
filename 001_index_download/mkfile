@@ -5,9 +5,9 @@ all:VQ:
 
 ##Dado que los pubmedis se generaron desde bin/targets, no es necesario aqui especificar que el prereq es un archivo en data/
 results/%.metadata.html:
-	PERRO=$(echo $stem | cut -d/ -f2)
+	PATH=$(echo $stem | cut -d/ -f2)
 	echo "Descargando información del pubmedid $PERRO"
 	set -x
 	mkdir -p `dirname $target`
-	wget -q -O - $BASE_URL$PERRO > $target.build \
+	wget -q -O - $BASE_URL$PATH > $target.build \
         && mv $target.build $target
